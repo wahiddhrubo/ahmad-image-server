@@ -36,21 +36,4 @@ router.post(
 	}
 );
 
-// UPLOAD GALLERY
-router.post("/upload/:filePath", upload.any("gallery"), (req, res, next) => {
-	const public_id = `${req.protocol}://${req.get("host")}`;
-	const imgUri = [];
-	if (req.files.length > 1) {
-		req.files.forEach((f) => {
-			const url = `${public_id}/${f.path.replace(/\\/g, "/")}`;
-			imgUri.push({
-				public_id,
-				url,
-				created_at: new Date(),
-			});
-		});
-		res.send({ success: true, imgUri });
-	}
-});
-
 module.exports = router;
