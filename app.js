@@ -2,12 +2,12 @@ const dotenv = require("dotenv");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+dotenv.config({ path: "config/config.env" });
 
 const imageRoute = require("./routes/image");
 
 const app = express();
 //CONFIG
-dotenv.config({ path: "config/config.env" });
 
 app.use(express.static(path.resolve("./uploads")));
 
