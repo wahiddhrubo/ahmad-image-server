@@ -29,6 +29,7 @@ router.post(
 	"/upload/single/:filePath",
 	upload.single("image"),
 	(req, res, next) => {
+		console.log("running !!!");
 		const public_id = `${req.protocol}://${req.get("host")}`;
 		const url = `${public_id}/${req.file.path.replace(/\\/g, "/")}`;
 		const imageUri = {
@@ -59,11 +60,13 @@ const testUpload = multer({ storage: testStorage });
 
 //FOR TESTING
 router.post("/test/upload", testUpload.single("image"), async (req, res) => {
+	console.log("running ");
 	const imageUri = {
 		public_id: "https://res.cloudinary.com",
 		url: req.file.path,
 		created_at: new Date(),
 	};
+	res.header("Access-Control-Allow-Origin", "*");
 	return res.json({ success: true, imageUri });
 });
 
