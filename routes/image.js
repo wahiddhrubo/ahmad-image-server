@@ -2,6 +2,12 @@ const express = require("express");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config({ path: "config/config.env" });
+
+//FOR TESTING
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const router = express.Router();
 
@@ -36,5 +42,26 @@ router.post(
 		res.send({ success: true, imageUri });
 	}
 );
+
+//FOR TESTING
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+//FOR TESTING
+const testStorage = new CloudinaryStorage({
+	cloudinary: cloudinary,
+	params: {
+		folder: "Ahmad",
+	},
+});
+const testUpload = multer({ storage: testStorage });
+
+//FOR TESTING
+router.post("/test/upload", testUpload.single("image"), async (req, res) => {
+	return res.json({ success: true, imageUri: req.file.path });
+});
 
 module.exports = router;
