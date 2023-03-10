@@ -9,8 +9,9 @@ const upload = multer({
 	storage: multer.diskStorage({
 		destination: (req, file, next) => {
 			const { filePath } = req.params;
-			const imageUploadPath = `/uploads/products/${filePath}`;
-			fs.mkdirSync(imageUploadPath, { recursive: true });
+			const imageUploadPath = `/test/uploads/`;
+			// const imageUploadPath = `/uploads/products/${filePath}`;
+			// fs.mkdirSync(imageUploadPath, { recursive: true });
 			return next(null, imageUploadPath);
 		},
 		filename: (req, file, next) => {
