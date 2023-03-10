@@ -13,9 +13,9 @@ const upload = multer({
 	storage: multer.diskStorage({
 		destination: (req, file, next) => {
 			const { filePath } = req.params;
-			const imageUploadPath = `/test/uploads/`;
-			// const imageUploadPath = `/uploads/products/${filePath}`;
-			// fs.mkdirSync(imageUploadPath, { recursive: true });
+
+			const imageUploadPath = `/uploads/products/${filePath}`;
+			fs.mkdirSync(imageUploadPath, { recursive: true });
 			return next(null, imageUploadPath);
 		},
 		filename: (req, file, next) => {
@@ -59,7 +59,12 @@ const testUpload = multer({ storage: testStorage });
 
 //FOR TESTING
 router.post("/test/upload", testUpload.single("image"), async (req, res) => {
-	return res.json({ success: true, imageUri: req.file.path });
+	const imageUri = {
+		public_id: "https://res.cloudinary.com",
+		url: req.file.path,
+		created_at: new Date(),
+	};
+	return res.json({ success: true, imageUri });
 });
 
 module.exports = router;
